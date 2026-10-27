@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣、日本、韓國 2016–2025 年入境旅客人次趨勢比較</title>
+    
+    <!-- Highcharts Scripts loaded in head to prevent ReferenceError -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <!-- Tailwind CSS for modern layout -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --highcharts-background-color: #ffffff;
+            --highcharts-neutral-color-100: #1e293b;
+            --highcharts-neutral-color-60: #64748b;
+            --highcharts-neutral-color-10: #e2e8f0;
+            --highcharts-neutral-color-3: #f8fafc;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f1f5f9;
+            color: var(--highcharts-neutral-color-100);
+            margin: 0;
+            padding: 0;
+        }
+
+        .highcharts-figure {
+            min-width: 320px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Custom CSS for Highcharts Tooltip matching provided template style */
+        .highcharts-tooltip-box {
+            fill: rgba(255, 255, 255, 0.95);
+            stroke-width: 1px;
+            stroke: #cbd5e1;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-tooltip {
+            padding: 8px 12px;
+            font-size: 0.9em;
+        }
+
+        .custom-tooltip caption {
+            font-size: 1.05em;
+            font-weight: 700;
+            padding-bottom: 0.5em;
+            border-bottom: 1px solid var(--highcharts-neutral-color-10);
+            text-align: left;
+            color: #0f172a;
+            margin-bottom: 0.5em;
+            display: block;
+        }
+
+        .custom-tooltip table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .custom-tooltip th {
+            font-weight: 500;
+            padding: 0.25em 0;
+            color: var(--highcharts-neutral-color-60);
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .custom-tooltip td {
+            font-weight: 700;
+            padding: 0.25em 0 0.25em 1.5em;
+            text-align: right;
+            color: #0f172a;
+        }
+
+        .highcharts-description {
+            background: #f8fafc;
+            border-radius: 0 8px 8px 0;
+            border-left: 4px solid #0284c7;
+            font-size: 0.875rem;
+            color: #475569;
+            padding: 12px 16px;
+            margin: 1.5em 0 1em;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body class="py-8 px-4">
+
+    <div class="max-w-5xl mx-auto space-y-8">
+
+        <!-- Header Card -->
+        <header class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200/80">
+            <span class="inline-block px-3 py-1 bg-sky-100 text-sky-700 text-xs font-semibold rounded-full mb-3">東亞旅遊市場大數據</span>
+            <h1 class="text-2xl md:text-3xl font-bold text-slate-800 tracking-tight">
+                台灣、日本、韓國 2016–2025 年入境旅客人次趨勢比較
+            </h1>
+            <p class="text-slate-500 text-sm md:text-base mt-2">
+                資料來源：中華民國交通部觀光署 (TDB)、日本政府觀光局 (JNTO)、韓國觀光公社 (KTO)
+            </p>
+
+            <!-- Key Metric Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                    <span class="text-xs font-medium text-slate-500">2025 年日本預估入境</span>
+                    <div class="text-2xl font-black text-amber-500 mt-1">4,268 萬</div>
+                    <span class="text-xs text-emerald-600 font-medium">↑ 創歷史新高 (+33.9% vs 2019)</span>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                    <span class="text-xs font-medium text-slate-500">2025 年韓國預估入境</span>
+                    <div class="text-2xl font-black text-emerald-500 mt-1">1,893 萬</div>
+                    <span class="text-xs text-emerald-600 font-medium">↑ 超越疫情前 (+8.2% vs 2019)</span>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                    <span class="text-xs font-medium text-slate-500">2025 年台灣預估入境</span>
+                    <div class="text-2xl font-black text-sky-500 mt-1">857 萬</div>
+                    <span class="text-xs text-slate-500 font-medium">復甦至疫情前 72.3%</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Chart Section -->
+        <main class="bg-white rounded-2xl p-4 md:p-8 shadow-sm border border-slate-200/80">
+            <figure class="highcharts-figure">
+                <div id="container" class="w-full h-[450px]"></div>
+                <p class="highcharts-description">
+                    <strong>圖表說明：</strong>本圖呈現 2016 至 2025 十年間台、日、韓三國的入境旅客人次（Inbound Tourists）變化。點擊圖例可切換單一或多個國家進行對比；滑鼠移至數據點可查看精確旅客人次與同期比較。
+                </p>
+            </figure>
+        </main>
+
+        <!-- Article Report Section -->
+        <article class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200/80 prose max-w-none">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 pb-2 border-b border-slate-100">
+                走過風雨與復甦：台、日、韓 2016–2025 年入境旅遊市場十年大勢深度解析
+            </h2>
+
+            <p class="text-slate-600 leading-relaxed mb-4">
+                過去十年（2016–2025年），全球觀光旅遊業經歷了前所未有的劇烈震盪。從 2019 年前夕的歷史黃金高峰，到 2020 至 2022 年因全球疫情導致的邊境冰封，再到 2023 年之後的報復性反彈與強勁復甦，東亞三國（台灣、日本、韓國）交織出了一張張充滿戲劇張力的旅遊市場成績單。
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-700 mt-6 mb-3">三國觀光發展的三大關鍵階段</h3>
+
+            <div class="space-y-4 text-slate-600">
+                <div class="bg-slate-50 p-4 rounded-lg">
+                    <h4 class="font-bold text-slate-800">1. 蓄勢待發的黃金成長期（2016–2019）</h4>
+                    <p class="text-sm mt-1">
+                        在疫情爆發前，三國入境觀光皆呈現強勁成長。日本受惠於日圓匯率優勢與簽證放寬，2019 年衝破 3,188 萬人次；韓國憑藉 K-Pop 與韓流文化拉抬，2019 年達 1,750 萬人次；台灣也在 2019 年創下 1,186 萬人次歷史新高。
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 p-4 rounded-lg">
+                    <h4 class="font-bold text-slate-800">2. 邊境封鎖的谷底黑暗期（2020–2022）</h4>
+                    <p class="text-sm mt-1">
+                        2020 年初 COVID-19 爆發，全球旅遊凍結。2021 年為十年來最低谷，三國合計入境人數僅剩 135 萬人次（台灣僅約 14 萬人次），產業面臨前所未有的生存寒冬。
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 p-4 rounded-lg">
+                    <h4 class="font-bold text-slate-800">3. 報復性反彈與結構洗牌（2023–2025）</h4>
+                    <p class="text-sm mt-1">
+                        隨著 2023 年解封，觀光業迎來 V 型反彈。日本於 2025 年創下驚人的 4,268 萬人次；韓國超越疫情前水準達 1,893 萬人次；台灣則回升至 857 萬人次，展現穩定復甦動能。
+                    </p>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <!-- Script Block with Safety Check -->
+    <script>
+        function initChart() {
+            if (typeof Highcharts === 'undefined') {
+                setTimeout(initChart, 100);
+                return;
+            }
+
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'line',
+                    style: {
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+                    },
+                    plotBorderColor: 'var(--highcharts-neutral-color-10, #e6e6e6)',
+                    plotBorderWidth: 1,
+                    plotBorderRadius: 8
+                },
+
+                title: {
+                    text: '台、日、韓 2016–2025 歷年入境旅客人次趨勢',
+                    align: 'left',
+                    style: {
+                        fontSize: '18px',
+                        fontWeight: '700',
+                        color: '#1e293b'
+                    }
+                },
+
+                subtitle: {
+                    text: '單位：人次 (Visitors)',
+                    align: 'left',
+                    style: {
+                        color: '#64748b'
+                    }
+                },
+
+                xAxis: {
+                    categories: ['2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'],
+                    crosshair: true,
+                    lineWidth: 0,
+                    tickLength: 6,
+                    tickColor: '#cbd5e1'
+                },
+
+                yAxis: {
+                    title: {
+                        text: '入境旅客人次'
+                    },
+                    labels: {
+                        formatter: function () {
+                            return (this.value / 10000).toLocaleString() + ' 萬';
+                        }
+                    },
+                    gridLineDashStyle: 'Dash',
+                    gridLineColor: '#f1f5f9'
+                },
+
+                legend: {
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    layout: 'horizontal',
+                    itemStyle: {
+                        fontWeight: '600',
+                        color: '#334155'
+                    }
+                },
+
+                tooltip: {
+                    shared: true,
+                    useHTML: true,
+                    backgroundColor: null,
+                    borderWidth: 0,
+                    shadow: false,
+                    formatter: function () {
+                        let s = `<div class="custom-tooltip"><caption>${this.x} 年數據</caption><table>`;
+                        this.points.forEach(function (point) {
+                            s += `
+                            <tr>
+                              <th>
+                                <svg width="12" height="12" style="margin-right: 4px;">
+                                  <circle cx="6" cy="6" r="5" fill="${point.color}" />
+                                </svg>
+                                ${point.series.name}
+                              </th>
+                              <td>${point.y.toLocaleString()} 人次</td>
+                            </tr>`;
+                        });
+                        s += '</table></div>';
+                        return s;
+                    }
+                },
+
+                plotOptions: {
+                    series: {
+                        lineWidth: 3,
+                        marker: {
+                            enabled: true,
+                            radius: 4,
+                            symbol: 'circle'
+                        }
+                    }
+                },
+
+                series: [
+                    {
+                        name: '日本 (Japan)',
+                        color: '#f59e0b', // Amber-500
+                        data: [24039700, 28691073, 31191856, 31882049, 4115828, 245862, 3832110, 25066350, 36870148, 42683600]
+                    },
+                    {
+                        name: '韓國 (South Korea)',
+                        color: '#10b981', // Emerald-500
+                        data: [17241823, 13335758, 15346879, 17502756, 2519118, 967003, 3198017, 11031665, 16369629, 18936562]
+                    },
+                    {
+                        name: '台灣 (Taiwan)',
+                        color: '#0284c7', // Sky-600
+                        data: [10690279, 10739601, 11066707, 11864105, 1377861, 140479, 895962, 6486951, 7857686, 8574547]
+                    }
+                ],
+
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 600
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initChart);
+        } else {
+            initChart();
+        }
+    </script>
+</body>
+
+</html>
